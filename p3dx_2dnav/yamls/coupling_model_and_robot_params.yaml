@@ -1,0 +1,32 @@
+odom_topic_name: "/odom"
+acc_lim_theta: 60 # TODO (amal): The global planner was 2.0 radians which is way more than 60 degrees -- change the local planner to match this!!
+max_vel_theta: 34
+min_vel_theta: -34
+min_in_place_vel_theta: 6
+sim_time: 2.0 #2.0
+angular_sim_granularity: 2 #1.4
+acc_lim_x: 500 # mm/s^2
+sim_granularity: 30 # mm
+min_angle: 15 # degrees
+max_angle: 120 # degrees
+theta_weight: 1.0 # units # 1.0 means completely face handle, 0.0 means completely face tangent direction of motion
+intervals_when_drawing_curves: 10 # units
+multiplicativeFactor: 1000 # units
+min_arm_length: 140 # mm
+average_arm_length: 270 # mm
+max_arm_length: 540 # mm
+handle_length: 430 # mm
+update_human_pose_freq: 10.0 # Hz
+# NOTE (amal): the reason I define the robot footprint in this way (despite it
+# being already defined in another way in the costmap param file) is because the
+# way the costmap2d code reads the 2D list in is very complicated, and the code
+# to read the footprint in this format is easier.
+robot_footprint_num_points: 8
+robot_footprint0: [0.20, 0.2]
+robot_footprint1: [0.20,-0.2]
+robot_footprint2: [-0.25,-0.2]
+robot_footprint3: [-0.25,-0.075]
+robot_footprint4: [-0.45,-0.075]
+robot_footprint5: [-0.45,0.075]
+robot_footprint6: [-0.25,0.075]
+robot_footprint7: [-0.25,0.2]

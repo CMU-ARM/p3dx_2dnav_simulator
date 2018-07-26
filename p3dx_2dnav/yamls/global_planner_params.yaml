@@ -1,0 +1,62 @@
+GlobalPlanner:
+  cycles: 6500 # 5545 # 6755 # -1 #
+  # Parameters for the Robot
+  acc_lim_theta: 60 # TODO (amal): The global planner was 2.0 radians which is way more than 60 degrees -- change the local planner to match this!!
+  max_vel_theta: 34
+  min_vel_theta: -34
+  min_in_place_vel_theta: 6
+  sim_time: 2.0 #2.0
+  angular_sim_granularity: 2 #1.4
+  # Parameters for the Grid
+  numDiscretizations: 3
+  rotationCost: 0.1
+  obsCost: 0.05
+  heuristicRange: 5
+  heuristicRangeMultiplier: 100
+  heuristicRangeRequiredForSuccess: 80
+  # Parameters for the Coupling Model
+  min_angle: 15 # degrees
+  max_angle: 120 # degrees
+  theta_weight: 1.0 # units # 1.0 means completely face handle, 0.0 means completely face tangent direction of motion
+  intervals_when_drawing_curves: 10 # units
+  # HumanFootprint
+  humanFootprintNumPoints: 4
+  humanFootprintPoint0: [0.075,  0.15]
+  humanFootprintPoint1: [-0.075, 0.15]
+  humanFootprintPoint2: [-0.075,-0.15]
+  humanFootprintPoint3: [0.075, -0.15]
+
+  # min_arm_length: 14 # cm
+  # average_arm_length: 27 # cm
+  # max_arm_length: 54 # cm
+  # handle_length: 43 # cm
+  # acc_lim_x: 50 # cm/s^2
+  # max_vel_x: 60 # cm/s
+  # min_vel_x: 10 # cm/s
+  # sim_granularity: 3 # cm
+  # multiplicativeFactor: 100 # units
+  # # x (cm), y (cm), theta (degree), v (cm/s), w (degree/s), vSamples (number), wSamples (number)
+  # gridSize0: [18, 18, 45, 1, 1, 6, 5]
+  # gridSize1: [6, 6, 15, 1, 1, 8, 5]
+  # gridSize2: [2, 2, 5, 1, 1, 10, 5]
+  # distanceThresholds: [250, 75]
+  # gridOrigin: [0, 0, -22, 0, 0, 0, 0]
+  # movementCost: 0.2 # 1/cm
+
+  # Example of the params one would have to change to use mm instead of cm
+  min_arm_length: 140 # mm
+  average_arm_length: 270 # mm
+  max_arm_length: 540 # mm
+  handle_length: 430 # mm
+  acc_lim_x: 500 # mm/s^2
+  max_vel_x: 600 # mm/s
+  min_vel_x: 100 # mm/s
+  sim_granularity: 30 # mm
+  multiplicativeFactor: 1000 # units
+  # x (mm), y (mm), theta (degree), v (mm/s), w (degree/s), vSamples (number), wSamples (number)
+  gridSize0: [180, 180, 45, 10, 1, 6, 5]
+  gridSize1: [60, 60, 15, 10, 1, 8, 5]
+  gridSize2: [20, 20, 5, 10, 1, 10, 5]
+  distanceThresholds: [5500, 1250]
+  gridOrigin: [0, 0, -22, -5, 0, 0, 0]
+  movementCost: 0.02 # 1/mm

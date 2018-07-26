@@ -5,7 +5,7 @@ footprint: [[0.26, 0.0], [0.26, 0.165], [0.0, 0.165], [-0.2485, 0.165], [-0.2485
 inflation_radius: 0.4
 observation_sources: laser_scan_sensor
 laser_scan_sensor: {
-      sensor_frame: /lms100, 
+      sensor_frame: lms100, 
       data_type: LaserScan, 
       topic: /p3dx/laser/scan, 
       expected_update_rate: 0.1, 

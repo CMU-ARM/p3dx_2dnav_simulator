@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE"
+     value="$(find p3dx_2dnav)/config/custom_rosconsole.conf"/>
+
+  <!--MAP SERVER-->
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage-refined.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_yaml)" />
+
+  <!--AMCL and GAZEBO-->
+  <arg name="init_x" default="-11.0" />
+  <arg name="init_y" default="8.4" />
+  <arg name="init_a" default="0" />
+  <!--AMCL-->
+  <arg name="scan_topic" default="/p3dx/laser/scan"/>
+  <node name="amcl" pkg="amcl" type="amcl" args="">
+    <remap from="scan" to="$(arg scan_topic)" />
+    <param name="initial_pose_x" type="double" value="$(arg init_x )" />
+    <param name="initial_pose_y" type="double" value="$(arg init_y )" />
+    <param name="initial_pose_a" type="double" value="$(arg init_a )" />
+    <param name="initial_cov_xx" type="double" value="0.01" />
+    <param name="initial_cov_yy" type="double" value="0.01" />
+    <param name="initial_cov_aa" type="double" value="0.01" />
+  </node>
+
+  <!--P3DX in GAZEBO-->
+  <include file="$(find p3dx_gazebo)/launch/gazebo.launch">
+    <arg name="gui" value="true"/>
+    <arg name="init_x" value="$(arg init_x )"/>
+    <arg name="init_y" value="$(arg init_y )"/>
+    <arg name="init_a" value="$(arg init_a )"/>
+    <arg name="contact" value="0" />
+  </include>
+
+  <!--MOVE BASE for COSTMAP-->
+  <arg name="cmd_ns" default="p3dx" />
+  <include file="$(find p3dx_2dnav)/launch/move_base.launch">
+    <arg name="cmd_vel" value="/$(arg cmd_ns)/cmd_vel"/>
+  </include>
+
+  <!--RVIZ-->
+  <include file="$(find p3dx_description)/launch/rviz.launch">
+    <arg name="rviz_node_args" value="-d $(find p3dx_2dnav)/config/p3dx_2dnav.rviz"/>
+  </include>
+
+  <!--rqt plotting-->
+  <!-- <include file="$(find p3dx_2dnav)/launch/rqt_plot.launch">
+    <arg name="ref_ns" value="$(arg cmd_ns)"/>
+  </include> -->
+</launch>
