@@ -44,11 +44,12 @@ include_directories(
 add_executable(obstacle src/obstacle.cpp)
 add_executable(transform src/transformRobotToGroundTruth.cpp)
 add_executable(lmsToBase src/lmsToBase.cpp)
+add_executable(convertPoses src/convertPoses.cpp)
 
 target_link_libraries(obstacle ${catkin_LIBRARIES})
 target_link_libraries(transform ${catkin_LIBRARIES})
 target_link_libraries(lmsToBase ${catkin_LIBRARIES})
-
+target_link_libraries(convertPoses ${catkin_LIBRARIES})
 
 install(DIRECTORY launch
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
