@@ -22,11 +22,7 @@ class Start:
         self._unpause = rospy.ServiceProxy("/gazebo/unpause_physics", EmptySrv)
         self._reset = rospy.ServiceProxy("/gazebo/reset_simulation", EmptySrv)
         self._rviz_pub = rospy.Publisher("/initialpose", PoseWithCovarianceStamped, queue_size=2, latch=True)
-        self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
-        self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
-        self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
-
-
+        
     def _start(self, robot, truth):
         # pause
         rospy.wait_for_service("/gazebo/pause_physics")
