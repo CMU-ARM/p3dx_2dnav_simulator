@@ -15,7 +15,7 @@ import time
 import tf
 from convert import Convert
 
-class Simulation:
+class Start:
     def __init__(self):
         self._set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
         self._pause = rospy.ServiceProxy("/gazebo/pause_physics", EmptySrv)
@@ -25,13 +25,9 @@ class Simulation:
         self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
         self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
         self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
-        self._restart = False
 
-    def _result_cb(self, msg):
-        if msg.status.text == "Goal reached.":
-            self._restart = True
 
-    def _simulate(self, robot, truth):
+    def _start(self, robot, truth):
         # pause
         rospy.wait_for_service("/gazebo/pause_physics")
         try:
@@ -88,13 +84,8 @@ class Simulation:
                 ret = self._set_state(state)
                 if not ret.success:
                     rospy.loginfo(ret.status_message)
-                    self._restart = True
-                    self._kill()
-                    self._simulate(planner, start, finish)
             except Exception, e:
                 rospy.logerr("Error on calling service: %s", str(e))
-                self._restart = True
-                self._kill()
         
         for i in range(0, 10000):
             self._rviz_pub.publish(initial)
@@ -111,8 +102,9 @@ class Simulation:
             self._rviz_pub.publish(initial)
         time.sleep(1)
 
+
 if __name__ == '__main__':
-    rospy.init_node("simulate")
+    rospy.init_node("start")
 
     rospack = rospkg.RosPack()
     directory = rospack.get_path("p3dx_2dnav")
@@ -122,7 +114,7 @@ if __name__ == '__main__':
     with open(filepath) as f:
         data = json.load(f)
 
-    s = Simulation()
+    s = Start()
 
     # example usage
-    s._simulate(data["robot"][0]["pose"], data["ground_truth"][0]["pose"]["pose"])
+    s._start(data["robot"][0]["pose"], data["ground_truth"][0]["pose"]["pose"])
