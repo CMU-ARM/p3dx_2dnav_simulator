@@ -1,9 +1,10 @@
 recovery_behaviors: []
 recovery_behavior_enabled: false
 clearing_rotation_allowed: false
-base_global_planner: podi_robot_only_planner/GlobalPlanner
-#base_global_planner: podi_robot_human_coupled_planner/GlobalPlanner
+# base_global_planner: podi_robot_only_planner/GlobalPlanner
+base_global_planner: podi_robot_human_coupled_planner/GlobalPlanner
 base_local_planner: podi_base_local_planner/PodiTrajectoryPlannerROS
 # base_local_planner: podi_dwa_local_planner/DWAPlannerROS
 max_planning_retries: 0
 controller_frequency: 6
+resetStateTopic: "/coupling_model_node/resetState"

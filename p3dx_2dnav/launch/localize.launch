@@ -40,11 +40,11 @@
     <!-- <param name="transform_tolerance" value="0.1" /> -->
 
     <!--Initial pose covariance (x*x), used to initialize filter with Gaussian distribution. -->
-    <param name="initial_cov_xx" value="0.02"/>
+    <param name="initial_cov_xx" value="0.0000000"/>
     <!--Initial pose covariance (y*y), used to initialize filter with Gaussian distribution. -->
-    <param name="initial_cov_yy" value="0.02"/>
+    <param name="initial_cov_yy" value="0.0000000"/>
     <!--Initial pose covariance (yaw*yaw), used to initialize filter with Gaussian distribution. -->
-    <param name="initial_cov_aa" value="0.02"/>
+    <param name="initial_cov_aa" value="0.0000000"/>
     <!--When set to true, AMCL will subscribe to the map topic rather than making a service call to receive its map. New in navigation XXXX-->
     <param name="use_map_topic" value="true"/>
 
@@ -116,4 +116,6 @@
   <node name="coupling_model_node" pkg="podi_navigation_helpers" type="coupling_model_node" output="screen">
     <rosparam file="$(find p3dx_2dnav)/yamls/coupling_model_and_robot_params.yaml" command="load"/>
   </node>
+
+  <node name="convert_poses" pkg="p3dx_2dnav" type="convertPoses"/>
 </launch>

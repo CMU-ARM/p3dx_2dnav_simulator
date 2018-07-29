@@ -30,3 +30,13 @@ robot_footprint4: [-0.45,-0.075]
 robot_footprint5: [-0.45,0.075]
 robot_footprint6: [-0.25,0.075]
 robot_footprint7: [-0.25,0.2]
+
+# Params for the coupling model node (real-time update of human pose)
+handleLengthForCouplingModel: 0.168496 # m
+regionOffset: 0.505487 # m
+regionSize: 0.227023 # m
+regionAngle: 57.4074 # degrees
+alpha: 0.833333 # weight in [0.0, 1.0]
+beta: 0.713992 # weight in [0.0, 1.0]
+distanceEqualityThreshold: 0.005 # m
+orientationEqualityThreshold: 0.05 # degrees

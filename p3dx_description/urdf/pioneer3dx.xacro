@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 This is the xacro description of a Pioneer 3DX, to be used in rviz and gazebo.
 Copyright (C) 2013 Rafael Berkvens rafael.berkvens@uantwerpen.be
 
@@ -40,7 +40,7 @@ work original in ucs-ros-pkg.
   <!-- chassis -->
   <link name="$(arg base_frame)">
     <inertial>
-      <mass value="26" />
+      <mass value="25" />
       <!--<origin xyz="-0.025 0 -0.223"/> -->
       <origin xyz="-0.05 0 0" />
       <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
@@ -256,7 +256,7 @@ work original in ucs-ros-pkg.
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="package://p3dx_description/meshes/lms100.dae" />     
+        <mesh filename="package://p3dx_description/meshes/lms100.dae" />
       </geometry>
     </visual>
     <collision name='collision'>
