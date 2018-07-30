@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import csv
 import fnmatch
 import rospkg
 import json
@@ -40,13 +41,12 @@ if __name__ == '__main__':
 
     # divide into a 2d array based on simulation
     length = len(files)
-    divisor = 6
+    divisor = 8
     divisions = length / divisor
 
     for i in range (0, divisions):
 	simulations.append(files[i*divisor : (i+1)*divisor])
-	
-    data = []
+    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dpz", "dox", "doy", "doz", "dow", "o-avg", "o-max", "o-min"]
     run = raw_input("What timestamp would you like to see? ")
 
     # extract and analyze data
@@ -57,6 +57,7 @@ if __name__ == '__main__':
         obstacle = find("*obstacle.json", simulation)
         person = find("*person.json", simulation)
         planner = find("*plan.json", simulation)
+        description = find("*description.json", simulation)
 
         # display based on user input
         if run == simulation[0][0:15] or run == "all" or run == "All":
@@ -66,17 +67,20 @@ if __name__ == '__main__':
             with open(directory + '/simulations/' + rviz) as f1:
                 r = json.load(f1)
             
-            with open(directory + '/simulations/' + gazebo) as f1:
-                t = json.load(f1)
+            with open(directory + '/simulations/' + gazebo) as f2:
+                t = json.load(f2)
 	
-            with open(directory + '/simulations/' + obstacle) as f2:
-                o = json.load(f2)
+            with open(directory + '/simulations/' + obstacle) as f3:
+                o = json.load(f3)
 
-            with open(directory + '/simulations/' + person) as f3:
-                p = json.load(f3)
+            with open(directory + '/simulations/' + person) as f4:
+                p = json.load(f4)
 	
-            with open(directory + '/simulations/' + planner) as f4:
-                planner = json.load(f4)
+            with open(directory + '/simulations/' + planner) as f5:
+                planner = json.load(f5)
+                
+            with open(directory + '/simulations/' + planner) as f6:
+                description = json.load(f6)
 
             path = Path()
             marker_array = MarkerArray()
@@ -235,8 +239,12 @@ if __name__ == '__main__':
             minimum = min(newArray)
             avg = total / len(obstacles)
 
-            array = [simulation[0][0:15], g["planner"], dpx, dpy, dpz, dox, doy, doz, dow, avg, maximum, minimum]
+            array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, dpz, dox, doy, doz, dow, avg, maximum, minimum]
             data.append(array)
 			
-    print(data)
+    #print(data)
+    csv_name = 'firstrun.csv'
+    with open(directory + '/results/' + csv_name) as f:
+        csvWriter = csv.writer(f, delimiter=',')
+        csvWriter.writerows(data)
 	
