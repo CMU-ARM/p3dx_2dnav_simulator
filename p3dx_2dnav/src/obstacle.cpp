@@ -125,7 +125,7 @@ int main(int argc, char **argv){
   consolidate c;
 
   ros::Subscriber csub = n.subscribe("/podi_move_base/global_costmap/costmap", 1000, &consolidate::costmap_cb, &c);
-  ros::Subscriber psub = n.subscribe("/robot_position", 1000, &consolidate::pose_cb, &c);
+  ros::Subscriber psub = n.subscribe("/coupling_model_node/human_position", 1000, &consolidate::pose_cb, &c);
   ros::Publisher dpub = n.advertise<std_msgs::Float64>("obstacle_dist", 1000);
 
   ros::Duration(7).sleep();
