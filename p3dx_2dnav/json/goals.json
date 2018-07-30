@@ -1,0 +1,170 @@
+{
+  "trajectory": {
+    "1": [
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 45
+        },
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 90
+        },
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -90
+        },
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 0
+        },
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -135
+        }
+    ],
+    "2": [
+        {
+          "frame_id": "map",
+          "description": "Crowded corridor",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 45
+        },
+        {
+          "frame_id": "map",
+          "description": "Crowded corridor",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 0
+        },
+        {
+          "frame_id": "map",
+          "description": "Crowded corridor",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -45
+        }
+    ],
+    "3": [
+        {
+          "frame_id": "map",
+          "description": "Bottom entrance facing 90 degrees",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 90
+        },
+        {
+          "frame_id": "map",
+          "description": "Bottom entrance facing 90 degrees",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 135
+        },
+        {
+          "frame_id": "map",
+          "description": "Bottom entrance facing 90 degrees",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 45
+        }
+    ],
+    "4": [
+        {
+          "frame_id": "map",
+          "description": "Open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 0
+        },
+        {
+          "frame_id": "map",
+          "description": "Open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -45
+        },
+        {
+          "frame_id": "map",
+          "description": "Open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 45
+        }
+    ],
+    "5": [
+        {
+          "frame_id": "map",
+          "description": "Top room entrance",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 90
+        },
+        {
+          "frame_id": "map",
+          "description": "Top room entrance",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 45
+        },
+        {
+          "frame_id": "map",
+          "description": "Top room entrance",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 135
+        }
+    ],
+    "6": [
+        {
+          "frame_id": "map",
+          "description": "Top open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 90
+        },
+        {
+          "frame_id": "map",
+          "description": "Top open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -90
+        },
+        {
+          "frame_id": "map",
+          "description": "Top open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 135
+        },
+        {
+          "frame_id": "map",
+          "description": "Top open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": -135
+        },
+        {
+          "frame_id": "map",
+          "description": "Top open room",
+          "x": 10.30000000000,
+          "y": 3.50000000000,  
+          "angle": 180
+        }
+    ]
+  }
+}
