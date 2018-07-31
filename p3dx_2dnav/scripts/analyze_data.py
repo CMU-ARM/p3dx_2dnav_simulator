@@ -47,7 +47,8 @@ if __name__ == '__main__':
     for i in range (0, divisions):
 	simulations.append(files[i*divisor : (i+1)*divisor])
     data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dpz", "dox", "doy", "doz", "dow", "o-avg", "o-max", "o-min"]
-    run = raw_input("What timestamp would you like to see? ")
+    #run = raw_input("What timestamp would you like to see? ")
+    run = None
 
     # extract and analyze data
     for simulation in simulations:
@@ -213,34 +214,34 @@ if __name__ == '__main__':
                     marker_pub.publish(marker_array)
                     rospy.sleep(0.1)
             
-            if g["planner"] == "robot_only":
-                #xy = c.robot_to_human(g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"], theta)
-                xy = c.robot_to_human(g["goal"][-1]["poses"][0]["position"]["x"], g["goal"][-1]["poses"][0]["position"]["y"], theta)
-                dpx = abs(p["person"][-1]["pose"]["position"]["x"] - xy[0])
-                dpy = abs(p["person"][-1]["pose"]["position"]["y"] - xy[1])
-            else:
-                dpx = abs(p["person"][-1]["pose"]["position"]["x"] - g["goal"][-1]["poses"][0]["position"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"])
-                dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
-                
-            dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
-            dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
-            doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
-            doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
-            dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
+        if g["planner"] == "robot_only":
+            #xy = c.robot_to_human(g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"], theta)
+            xy = c.robot_to_human(g["goal"][-1]["poses"][0]["position"]["x"], g["goal"][-1]["poses"][0]["position"]["y"], theta)
+            dpx = abs(p["person"][-1]["pose"]["position"]["x"] - xy[0])
+            dpy = abs(p["person"][-1]["pose"]["position"]["y"] - xy[1])
+        else:
+            dpx = abs(p["person"][-1]["pose"]["position"]["x"] - g["goal"][-1]["poses"][0]["position"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"])
+            dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
+            
+        dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
+        dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
+        doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
+        doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
+        dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
 
-            obstacles = o["obstacle"]
-            total = 0
-            newArray = []
-            for obstacle in obstacles:
-                total += obstacle["data"]
-                newArray.append(obstacle["data"])
+        obstacles = o["obstacle"]
+        total = 0
+        newArray = []
+        for obstacle in obstacles:
+            total += obstacle["data"]
+            newArray.append(obstacle["data"])
 
-            maximum = max(newArray)
-            minimum = min(newArray)
-            avg = total / len(obstacles)
+        maximum = max(newArray)
+        minimum = min(newArray)
+        avg = total / len(obstacles)
 
-            array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, dpz, dox, doy, doz, dow, avg, maximum, minimum]
-            data.append(array)
+        array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, dpz, dox, doy, doz, dow, avg, maximum, minimum]
+        data.append(array)
 			
     #print(data)
     csv_name = 'firstrun.csv'

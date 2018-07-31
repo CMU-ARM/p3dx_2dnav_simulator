@@ -45,7 +45,7 @@ class Simulation:
             self._restart = False
             if planner == "robot_only":
                 self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","robot.launch"])
-            elif planner = "coupled":
+            elif planner == "coupled":
                 self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","coupled.launch"])
 
             rospy.wait_for_service("/gazebo/pause_physics")
@@ -261,4 +261,4 @@ if __name__ == '__main__':
         rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index, 28 - index))
         
     analyze = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
-    os.system("All")
+    
