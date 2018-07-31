@@ -55,7 +55,7 @@ GlobalPlanner:
   gridSize0: [180, 180, 45, 10, 1, 6, 5]
   gridSize1: [60, 60, 15, 10, 1, 8, 5]
   gridSize2: [20, 20, 5, 10, 1, 10, 5]
-  distanceThresholds: [2000, 500]
+  distanceThresholds: [1000, 500]
   gridOrigin: [0, 0, -22, -5, 0, 0, 0]
   movementCost: 0.02 # 1/mm
   # Params for the coupling model
