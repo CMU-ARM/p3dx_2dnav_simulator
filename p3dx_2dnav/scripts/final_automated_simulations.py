@@ -230,7 +230,7 @@ if __name__ == '__main__':
             s._simulate("robot_only", start_data, data["trajectory"]["6"]) 
         s._wait()
         s._kill()
-        rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index, 57 - index))
+        rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index + 1, 57 - index))
         
     for startfile in files:
         
@@ -258,7 +258,7 @@ if __name__ == '__main__':
             s._simulate("coupled", start_data, data["trajectory"]["6"]) 
         s._wait()
         s._kill()
-        rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index, 28 - index))
+        rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
         
     analyze = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
     
