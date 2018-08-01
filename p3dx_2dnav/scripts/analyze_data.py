@@ -223,14 +223,20 @@ if __name__ == '__main__':
             dpx = abs(p["person"][-1]["pose"]["position"]["x"] - g["goal"][-1]["poses"][0]["position"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"])
             dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
             
-        dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
+        #dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
         
-        dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
-        doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
-        doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
-        dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
-        rpy = tf.transformations.euler_from_quaternion((dox, doy, doz, dow))
-        yaw_diff = rpy[2]
+        p_euler = tf.transformations.euler_from_quaternion((p["person"][-1]["pose"]["orientation"]["x"], p["person"][-1]["pose"]["orientation"]["y"], p["person"][-1]["pose"]["orientation"]["z"], 
+        p["person"][-1]["pose"]["orientation"]["w"]))
+        
+        g_euler = tf.transformations.euler_from_quaternion((g["goal"][-1]["poses"][0]["orientation"]["x"], g["goal"][-1]["poses"][0]["orientation"]["y"], g["goal"][-1]["poses"][0]["orientation"]["z"], 
+        g["goal"][-1]["poses"][0]["orientation"]["w"]))
+        
+        yaw_diff = abs(p_euler[2] - g_euler[2])
+        
+        #dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
+        #doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
+        #doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
+        #dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
 
         obstacles = o["obstacle"]
         total = 0
