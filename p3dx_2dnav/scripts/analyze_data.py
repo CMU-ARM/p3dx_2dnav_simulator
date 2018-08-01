@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     for i in range (0, divisions):
 	simulations.append(files[i*divisor : (i+1)*divisor])
-    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dyaw (radians)", "o-avg", "o-max", "o-min"]
+    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min"]
     #run = raw_input("What timestamp would you like to see? ")
     run = None
 
