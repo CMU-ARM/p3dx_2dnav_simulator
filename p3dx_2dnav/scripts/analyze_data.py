@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     for i in range (0, divisions):
 	simulations.append(files[i*divisor : (i+1)*divisor])
-    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dpz", "dox", "doy", "doz", "dow", "o-avg", "o-max", "o-min"]
+    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dyaw (radians)", "o-avg", "o-max", "o-min"]
     #run = raw_input("What timestamp would you like to see? ")
     run = None
 
@@ -224,10 +224,13 @@ if __name__ == '__main__':
             dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
             
         dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
+        
         dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
         doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
         doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
         dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
+        rpy = tf.transformations.euler_from_quaternion((dox, doy, doz, dow))
+        yaw_diff = rpy[2]
 
         obstacles = o["obstacle"]
         total = 0
@@ -240,7 +243,7 @@ if __name__ == '__main__':
         minimum = min(newArray)
         avg = total / len(obstacles)
 
-        array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, dpz, dox, doy, doz, dow, avg, maximum, minimum]
+        array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
         data.append(array)
 			
     #print(data)
