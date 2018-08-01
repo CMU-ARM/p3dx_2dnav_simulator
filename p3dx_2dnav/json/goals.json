@@ -17,17 +17,19 @@
         },
         {
           "frame_id": "map",
-          "description": "45 degree hallway, -90",
-          "x": -11.8435468674,
-          "y": -2.49773573875, 
-          "angle": -90
-        },
-        {
-          "frame_id": "map",
           "description": "45 degree hallway, 0",
           "x": -11.8435468674,
           "y": -2.49773573875,
           "angle": 0
+        }
+    ],
+    "2": [
+        {
+          "frame_id": "map",
+          "description": "45 degree hallway, -90",
+          "x": -11.8435468674,
+          "y": -2.49773573875, 
+          "angle": -90
         },
         {
           "frame_id": "map",
@@ -37,7 +39,7 @@
           "angle": -135
         }
     ],
-    "2": [
+    "3": [
         {
           "frame_id": "map",
           "description": "Crowded corridor, 45",
@@ -60,7 +62,7 @@
           "angle": -45
         }
     ],
-    "3": [
+    "4": [
         {
           "frame_id": "map",
           "description": "Bottom entrance facing 90 degrees, 90",
@@ -83,7 +85,7 @@
           "angle": 45
         }
     ],
-    "4": [
+    "5": [
         {
           "frame_id": "map",
           "description": "Open room, 0",
@@ -106,7 +108,7 @@
           "angle": 45
         }
     ],
-    "5": [
+    "6": [
         {
           "frame_id": "map",
           "description": "Top room entrance, 90",
@@ -129,7 +131,7 @@
           "angle": 135
         }
     ],
-    "6": [
+    "7": [
         {
           "frame_id": "map",
           "description": "Top open room, 90",

@@ -1,5 +1,5 @@
 GlobalPlanner:
-  cycles: 15000 # 7500 # 6500 # 5545 # 6755 # -1 #
+  cycles: 10000 # 7500 # 6500 # 5545 # 6755 # -1 #
   intervalToPubPath: 1 # specifies the frequency at which the planner should publish the path it is currently evaluating
   # Parameters for the Robot
   acc_lim_theta: 60 # TODO (amal): The global planner was 2.0 radians which is way more than 60 degrees -- change the local planner to match this!!
@@ -11,7 +11,7 @@ GlobalPlanner:
   # Parameters for the Grid
   numDiscretizations: 3
   rotationCost: 0.1
-  obsCost: 0.05 #0.05
+  obsCost: 0.50 #0.05
   heuristicRange: 5
   heuristicRangeMultiplier: 100
   heuristicRangeRequiredForSuccess: 80
