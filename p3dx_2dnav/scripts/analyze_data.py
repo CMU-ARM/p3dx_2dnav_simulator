@@ -45,8 +45,10 @@ if __name__ == '__main__':
     divisions = length / divisor
 
     for i in range (0, divisions):
-	simulations.append(files[i*divisor : (i+1)*divisor])
-    data = ["Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min"]
+        simulations.append(files[i*divisor : (i+1)*divisor])
+
+    data = ["Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min", 
+            "Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min"]
     #run = raw_input("What timestamp would you like to see? ")
     run = None
 
@@ -249,11 +251,13 @@ if __name__ == '__main__':
         minimum = min(newArray)
         avg = total / len(obstacles)
 
-        array = [simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
-        data.append(array)
+        array = [(simulations.index(simulation) % 29) + 1, simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
+        if simulations.index(simulation) < 29):
+            data.append(array)
+        else: 
+            data[(simulations.index(simulation) % 29) + 1] += array
 			
-    #print(data)
-    csv_name = 'firstrun.csv'
+    csv_name = "first_run_data.csv"
     with open(directory + '/results/' + csv_name) as f:
         csvWriter = csv.writer(f, delimiter=',')
         csvWriter.writerows(data)

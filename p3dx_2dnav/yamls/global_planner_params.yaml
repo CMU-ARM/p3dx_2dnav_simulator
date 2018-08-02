@@ -11,7 +11,7 @@ GlobalPlanner:
   # Parameters for the Grid
   numDiscretizations: 3
   rotationCost: 0.1
-  obsCost: 0.50 #0.05
+  obsCost: 1.00 #0.05
   heuristicRange: 5
   heuristicRangeMultiplier: 100
   heuristicRangeRequiredForSuccess: 80
