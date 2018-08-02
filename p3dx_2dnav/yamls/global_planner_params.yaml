@@ -11,7 +11,7 @@ GlobalPlanner:
   # Parameters for the Grid
   numDiscretizations: 3
   rotationCost: 0.1
-  obsCost: 1.00 #0.05
+  obsCost: 1.60 #0.05
   heuristicRange: 5
   heuristicRangeMultiplier: 100
   heuristicRangeRequiredForSuccess: 80
@@ -59,11 +59,11 @@ GlobalPlanner:
   gridOrigin: [0, 0, -22, -5, 0, 0, 0]
   movementCost: 0.02 # 1/mm
   # Params for the coupling model
-  handleLengthForCouplingModel: 171 # mm
-  regionOffset: 507 # mm
-  regionSize: 241 # mm
+  handleLengthForCouplingModel: 242 # mm
+  regionOffset: 421 # mm
+  regionSize: 269 # mm
   regionAngle: 40 # degrees
-  alpha: 0.676452 # weight in [0.0, 1.0]
-  beta: 0.854187 # weight in [0.0, 1.0]
+  alpha: 0.643185 # weight in [0.0, 1.0]
+  beta: 0.801786 # weight in [0.0, 1.0]
   distanceEqualityThreshold: 5.0 # mm
   orientationEqualityThreshold: 0.05 # degrees
