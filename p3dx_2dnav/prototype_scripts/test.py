@@ -17,7 +17,6 @@ from convert import Convert
 
 class Simulation:
     def __init__(self):
-        self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","p3dx_2dnav.launch"])
         self._set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
         self._pause = rospy.ServiceProxy("/gazebo/pause_physics", EmptySrv)
         self._unpause = rospy.ServiceProxy("/gazebo/unpause_physics", EmptySrv)
@@ -25,7 +24,8 @@ class Simulation:
         self._rviz_pub = rospy.Publisher("/initialpose", PoseWithCovarianceStamped, queue_size=2, latch=True)
         self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
         self._result_sub = rospy.Subscriber("podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
-        self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
+        #self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
+        self._endgoal_pub = rospy.Publisher("/coupled_planner/planner/robot_traj_goal", PoseArray, queue_size=2)
         self._restart = False
 
     def _result_cb(self, msg):
@@ -33,92 +33,10 @@ class Simulation:
             self._restart = True
 
     def _simulate(self, planner, start=None, finish=None):
-	    # reset simulation if needed
-        if self._restart:
-            self._restart = False
-            self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","p3dx_2dnav.launch"])
-
-            rospy.wait_for_service("/gazebo/pause_physics")
-            try:
-                self._pause()
-            except Exception, e:
-                rospy.logerr("Error on calling service: %s", str(e))
-
-            rospy.wait_for_service("/gazebo/reset_simulation")
-            try:
-                self._reset()
-            except Exception, e:
-                rospy.logerr("Error on calling service: %s", str(e))
-
-        # pause
-        time.sleep(1)
-        rospy.wait_for_service("/gazebo/pause_physics")
-        try:
-            self._pause()
-        except Exception, e:
-            rospy.logerr("Error on calling service: %s", str(e))
-
-        # set initial pose
-        pose = Pose()
-        initial = PoseWithCovarianceStamped()
-        c = Convert()
-
-        xy = c.human_to_robot(start["x"], start["y"], start["angle"])
-        pose.position.x = xy[0]
-        pose.position.y = xy[1]
-        pose.position.z = 0
-
-        sangle = start["angle"] * math.pi / 180
-        qstart = tf.transformations.quaternion_from_euler(0, 0, sangle)
-        pose.orientation.x = qstart[0]
-        pose.orientation.y = qstart[1]
-        pose.orientation.z = qstart[2]
-        pose.orientation.w = qstart[3]
-
-        initial.pose.pose = pose
-        #initial.pose.pose.position.x = 0
-        #initial.pose.pose.position.y = 0
-        initial.header.frame_id = "map"
-        initial.pose.covariance = [0.01, -0.00012, 0.0, 0.0, 0.0, 0.0, -0.00012, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                                   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.009]
-
-        state = ModelState()
-        state.model_name = "p3dx"
-        state.pose = pose
-        
-        # set initial parameters and unpause
-        for i in range(0, 2):
-            rospy.wait_for_service("/gazebo/set_model_state")
-            try:
-                ret = self._set_state(state)
-                if not ret.success:
-                    rospy.loginfo(ret.status_message)
-                    self._restart = True
-                    self._kill()
-                    self._simulate(planner, start, finish)
-            except Exception, e:
-                rospy.logerr("Error on calling service: %s", str(e))
-                self._restart = True
-                self._kill()
-
-        #for i in range(0, 100000):
-        #self._rviz_pub.publish(initial)
-        #time.sleep(1)
-        
-        rospy.wait_for_service("/gazebo/unpause_physics")
-        try:
-            self._unpause()
-        except Exception, e:
-            rospy.logerr("Error on calling service: %s", str(e))
-
-        for i in range(0, 100000):
-            self._rviz_pub.publish(initial)
-        time.sleep(1)
-
         # set goal
         msg = PodiMoveBaseActionGoal()
         msg.goal.target_poses.header.frame_id = "map"
-
+        c = Convert()
         end_goals = PoseArray()
 
         for goal in finish:

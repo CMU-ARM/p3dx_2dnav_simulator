@@ -14,7 +14,7 @@ from std_msgs.msg import Float64
 rospack = rospkg.RosPack()
 directory = rospack.get_path("p3dx_2dnav")
 timestr = time.strftime("%Y%m%d-%H%M%S")
-name = timestr + "pose.json"
+name = raw_input("Number of recorded start: ") + "pose.json"
 path = directory + '/json/' + name
 poses = {"robot": [], "ground_truth": []}
 

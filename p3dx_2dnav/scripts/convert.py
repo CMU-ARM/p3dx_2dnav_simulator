@@ -2,7 +2,7 @@ import json
 from math import sin, cos, radians, pi
 
 class Convert():
-    def robot_to_human(self, x0, y0, theta, r=0.7):
+    def robot_to_human(self, x0, y0, theta, r=0.79898):
         point = []
         theta = (theta + 180) * pi / 180
         x = x0 + r * cos(theta) 
@@ -11,7 +11,7 @@ class Convert():
         point.append(y)
         return point
 
-    def human_to_robot(self, x0, y0, theta, r=0.7):
+    def human_to_robot(self, x0, y0, theta, r=0.79898):
         point = []
         theta = theta * pi / 180
         x = x0 + r * cos(theta) 
