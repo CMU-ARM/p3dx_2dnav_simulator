@@ -252,7 +252,7 @@ if __name__ == '__main__':
         avg = total / len(obstacles)
 
         array = [(simulations.index(simulation) % 29) + 1, simulation[0][0:15], description["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
-        if simulations.index(simulation) < 29):
+        if simulations.index(simulation) < 29:
             data.append(array)
         else: 
             data[(simulations.index(simulation) % 29) + 1] += array
