@@ -5,14 +5,14 @@
           "frame_id": "map",
           "description": "45 degree hallway, 45",
           "x": -11.8435468674,
-          "y": -2.49773573875,  
+          "y": -2.49773573875,
           "angle": 45
         },
         {
           "frame_id": "map",
           "description": "45 degree hallway, 90",
           "x": -11.8435468674,
-          "y": -2.49773573875,  
+          "y": -2.49773573875,
           "angle": 90
         },
         {
@@ -28,38 +28,24 @@
           "frame_id": "map",
           "description": "45 degree hallway, -90",
           "x": -11.8435468674,
-          "y": -2.49773573875, 
+          "y": -2.49773573875,
           "angle": -90
         },
         {
           "frame_id": "map",
           "description": "45 degree hallway, -135",
           "x": -11.8435468674,
-          "y": -2.49773573875, 
+          "y": -2.49773573875,
           "angle": -135
         }
     ],
     "3": [
         {
           "frame_id": "map",
-          "description": "Crowded corridor, 45",
-          "x": 5.87931537628,
-          "y": 3.53090286255,  
-          "angle": 45
-        },
-        {
-          "frame_id": "map",
           "description": "Crowded corridor, 0",
           "x": 5.87931537628,
           "y": 3.53090286255,
           "angle": 0
-        },
-        {
-          "frame_id": "map",
-          "description": "Crowded corridor, -45",
-          "x": 5.87931537628,
-          "y": 3.53090286255, 
-          "angle": -45
         }
     ],
     "4": [
@@ -67,21 +53,21 @@
           "frame_id": "map",
           "description": "Bottom entrance facing 90 degrees, 90",
           "x": 11.1467208862,
-          "y": -3.62330675125,  
+          "y": -3.62330675125,
           "angle": 90
         },
         {
           "frame_id": "map",
           "description": "Bottom entrance facing 90 degrees, 135",
           "x": 11.1467208862,
-          "y": -3.62330675125,   
+          "y": -3.62330675125,
           "angle": 135
         },
         {
           "frame_id": "map",
           "description": "Bottom entrance facing 90 degrees, 45",
           "x": 11.1467208862,
-          "y": -3.62330675125, 
+          "y": -3.62330675125,
           "angle": 45
         }
     ],
@@ -90,7 +76,7 @@
           "frame_id": "map",
           "description": "Open room, 0",
           "x": 23.9782600403,
-          "y": 13.4363431931,  
+          "y": 13.4363431931,
           "angle": 0
         },
         {
@@ -104,7 +90,7 @@
           "frame_id": "map",
           "description": "Open room, 45",
           "x": 23.9782600403,
-          "y": 13.4363431931, 
+          "y": 13.4363431931,
           "angle": 45
         }
     ],
@@ -113,21 +99,21 @@
           "frame_id": "map",
           "description": "Top room entrance, 90",
           "x": 15.3293113708,
-          "y": 20.1166095734,  
+          "y": 20.1166095734,
           "angle": 90
         },
         {
           "frame_id": "map",
           "description": "Top room entrance, 45",
           "x": 15.3293113708,
-          "y": 20.1166095734, 
+          "y": 20.1166095734,
           "angle": 45
         },
         {
           "frame_id": "map",
           "description": "Top room entrance, 135",
           "x": 15.3293113708,
-          "y": 20.1166095734, 
+          "y": 20.1166095734,
           "angle": 135
         }
     ],
@@ -136,28 +122,28 @@
           "frame_id": "map",
           "description": "Top open room, 90",
           "x": -4.19284582138,
-          "y": 20.993894577,  
+          "y": 20.993894577,
           "angle": 90
         },
         {
           "frame_id": "map",
           "description": "Top open room, -90",
           "x": -4.19284582138,
-          "y": 20.993894577,  
+          "y": 20.993894577,
           "angle": -90
         },
         {
           "frame_id": "map",
           "description": "Top open room, 135",
           "x": -4.19284582138,
-          "y": 20.993894577,  
+          "y": 20.993894577,
           "angle": 135
         },
         {
           "frame_id": "map",
           "description": "Top open room, -135",
           "x": -4.19284582138,
-          "y": 20.993894577,    
+          "y": 20.993894577,
           "angle": -135
         },
         {
