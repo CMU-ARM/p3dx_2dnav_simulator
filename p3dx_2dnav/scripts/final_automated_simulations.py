@@ -264,5 +264,5 @@ if __name__ == '__main__':
         s._kill()
         rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
         
-analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
-analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
+    analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
+    analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
