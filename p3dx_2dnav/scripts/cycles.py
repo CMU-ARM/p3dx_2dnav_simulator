@@ -48,6 +48,7 @@ if __name__ == '__main__':
     
     # extract and analyze data
     for simulation in rosout[0:runs_per_planner]:
+        rospy.loginfo("Analyzing run {}...".format(rosout.index(simulation)))
         robot_data = find("*rosout.json", simulation)
         
         index = rosout.index(simulation)

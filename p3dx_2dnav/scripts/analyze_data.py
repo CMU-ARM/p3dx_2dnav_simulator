@@ -29,6 +29,7 @@ def find(pattern, names):
 
 if __name__ == '__main__':
     rospy.init_node("analyze")
+    rospy.loginfo("Analyzing data...")
     
     path_pub = rospy.Publisher("/path", Path, queue_size=2)
     marker_pub = rospy.Publisher("/marker_array", MarkerArray, queue_size=2)
@@ -54,6 +55,7 @@ if __name__ == '__main__':
 
     # extract and analyze data
     for simulation in simulations:
+        rospy.loginfo("Analyzing simulation {}...".format(simulations.index(simulation)))
         goal = find("*goal.json", simulation)
         rviz = find("*rviz.json", simulation)
         gazebo = find("*gazebo.json", simulation)
