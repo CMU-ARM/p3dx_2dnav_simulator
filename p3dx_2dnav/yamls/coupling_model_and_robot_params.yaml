@@ -18,14 +18,14 @@ handle_length: 629 # mm
 # way the costmap2d code reads the 2D list in is very complicated, and the code
 # to read the footprint in this format is easier.
 robot_footprint_num_points: 8
-robot_footprint0: [0.20, 0.2]
-robot_footprint1: [0.20,-0.2]
-robot_footprint2: [-0.25,-0.2]
-robot_footprint3: [-0.25,-0.075]
-robot_footprint4: [-0.45,-0.075]
-robot_footprint5: [-0.45,0.075]
-robot_footprint6: [-0.25,0.075]
-robot_footprint7: [-0.25,0.2]
+robot_footprint0: [0.20, 0.20] #[0.20, 0.2]
+robot_footprint1: [0.20,-0.20] #[0.20,-0.2]
+robot_footprint2: [-0.25,-0.20] #[-0.25,-0.2]
+robot_footprint3: [-0.25,-0.075] #[-0.25,-0.075]
+robot_footprint4: [-0.45,-0.075] #[-0.45,-0.075]
+robot_footprint5: [-0.45,0.075] #[-0.45,0.075]
+robot_footprint6: [-0.25,0.075] #[-0.25,0.075]
+robot_footprint7: [-0.25,0.20] #[-0.25,0.2]
 
 # Params for the coupling model node (real-time update of human pose)
 handleLengthForCouplingModel: 0.241512 # m
