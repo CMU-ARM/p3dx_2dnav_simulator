@@ -52,9 +52,9 @@ PodiTrajectoryPlannerROS:
   latch_xy_goal_tolerance: true
 
   meter_scoring: true #Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells.
-  pdist_scale: 0.6 # 0.6 # The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0
+  pdist_scale: 0.7 # 0.6 # The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0
   gdist_scale: 0.8 # 0.8 # The weighting for how much the controller should attempt to reach its local goal, also controls speed, maximal possible value is 5.0
-  occdist_scale: 0.10 #0.01
+  occdist_scale: 0.15 #0.01
 
   dwa: false
   use_dwa: false
