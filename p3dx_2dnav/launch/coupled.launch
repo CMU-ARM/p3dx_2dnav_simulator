@@ -122,10 +122,10 @@
     <rosparam file="$(find podi_run_global_planners)/cfg/global_planner_params.yaml" command="load"/>
   </node>
 
-  <node pkg="podi_robot_only_planner" type="planner" respawn="false" name="robot_only_planner" output="screen">
+  <!--<node pkg="podi_robot_only_planner" type="planner" respawn="false" name="robot_only_planner" output="screen">
     <rosparam file="$(find podi_run_global_planners)/cfg/costmap_params.yaml" command="load" ns="costmap" />
     <rosparam file="$(find podi_run_global_planners)/cfg/global_planner_params.yaml" command="load"/>
-  </node>
+  </node>-->
 
   <node name="coupling_model_node" pkg="podi_navigation_helpers" type="coupling_model_node" output="screen">
     <rosparam file="$(find p3dx_2dnav)/yamls/coupling_model_and_robot_params.yaml" command="load"/>

@@ -175,7 +175,8 @@ class Simulation:
     def _wait(self):
         while not rospy.is_shutdown():
             if self._restart:
-	            break
+                time.sleep(3)
+                break
 
 # file sort key
 _nsre = re.compile('([0-9]+)')
@@ -195,7 +196,6 @@ if __name__ == '__main__':
         data = json.load(f)
 
     s = Simulation()
-    need_to_wait = False
     
     path = directory + "/json"
     files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
@@ -210,8 +210,8 @@ if __name__ == '__main__':
         with open(directory + '/json/' + startfile) as f:
             start_data = json.load(f)
             
-        if index == 2:
-            s._simulate("robot_only", start_data, data["trajectory"]["1"])
+        if index == 11:
+            s._simulate("robot_only", start_data, data["trajectory"]["3"])
             s._wait()
             s._kill()
         rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index + 1, 57 - index))
@@ -222,11 +222,11 @@ if __name__ == '__main__':
         with open(directory + '/json/' + startfile) as f:
             start_data = json.load(f)
             
-        #if index == 2:
+        #if index == 5:
         #    s._simulate("coupled", start_data, data["trajectory"]["1"]) 
         #    s._wait()
         #    s._kill()
-        rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
+        #rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
         
     #analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
     #analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
