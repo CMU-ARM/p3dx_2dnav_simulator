@@ -16,8 +16,13 @@ from std_msgs.msg import String
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from std_srvs.srv import Empty as EmptySrv
+from rosgraph_msgs.msg import Log
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, PoseArray
 from podi_move_base_msgs.msg import PodiMoveBaseActionGoal, PodiMoveBaseActionResult
+
+rospack = rospkg.RosPack()
+directory = rospack.get_path("p3dx_2dnav")
+fpath = directory + '/failures/' + "failures.txt"
 
 
 class Simulation:
@@ -30,17 +35,31 @@ class Simulation:
         self._rviz_pub = rospy.Publisher("/initialpose", PoseWithCovarianceStamped, queue_size=2, latch=True)
         self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
         self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
+        self._rosout_sub = rospy.Subscriber('/rosout', Log, self._ros_cb, queue_size=200)
         self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
         self._description_pub = rospy.Publisher("/description", String, queue_size=1)
         self._restart = True
+        self._index = None
+        self._start_time = None
+        self._end_time = None
 
     def _result_cb(self, msg):
         if msg.status.text == "Goal reached.":
             self._restart = True
 
-    def _simulate(self, planner, start=None, finish=None):
+    def _ros_cb(self, msg):
+        self._end_time = time.time()
+        difference = self._end_time - self._start_time
+        if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")) or difference > 1500:
+            self._restart = True
+            with open(fpath, "w+") as f:
+                f.write("Index: " + str(self._index) + "\n" + msg.msg + "\n")
+
+    def _simulate(self, planner, index, start=None, finish=None):
 	    # start simulation
+        self._index = index
         if self._restart:
+            self._start_time = time.time()
             self._restart = False
             if planner == "robot_only":
                 self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","robot.launch"])
@@ -218,22 +237,23 @@ if __name__ == '__main__':
             start_data = json.load(f)
 
         if index < 6:
-            s._simulate("robot_only", start_data, data["trajectory"]["1"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["1"])
         elif index < 8:
-            s._simulate("robot_only", start_data, data["trajectory"]["2"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["2"])
         elif index < 13:
-            s._simulate("robot_only", start_data, data["trajectory"]["3"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["3"])
         elif index < 16:
-            s._simulate("robot_only", start_data, data["trajectory"]["4"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["4"])
         elif index < 19:
-            s._simulate("robot_only", start_data, data["trajectory"]["5"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["5"])
         elif index < 24:
-            s._simulate("robot_only", start_data, data["trajectory"]["6"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["6"])
         else:
-            s._simulate("robot_only", start_data, data["trajectory"]["7"])
+            s._simulate("robot_only", index, start_data, data["trajectory"]["7"])
         s._wait()
         s._kill()
         rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index + 1, 57 - index))
+        time.sleep(3)
 
     # run through coupled simulations
     for startfile in files:
@@ -243,23 +263,24 @@ if __name__ == '__main__':
             start_data = json.load(f)
 
         if index < 6:
-            s._simulate("coupled", start_data, data["trajectory"]["1"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["1"])
         elif index < 8:
-            s._simulate("coupled", start_data, data["trajectory"]["2"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["2"])
         elif index < 13:
-            s._simulate("coupled", start_data, data["trajectory"]["3"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["3"])
         elif index < 16:
-            s._simulate("coupled", start_data, data["trajectory"]["4"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["4"])
         elif index < 19:
-            s._simulate("coupled", start_data, data["trajectory"]["5"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["5"])
         elif index < 24:
-            s._simulate("coupled", start_data, data["trajectory"]["6"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["6"])
         else:
-            s._simulate("coupled", start_data, data["trajectory"]["7"])
+            s._simulate("coupled", index, start_data, data["trajectory"]["7"])
         s._wait()
         s._kill()
         rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
+        time.sleep(3)
 
     # analyze data
-    analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
-    analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
+    #analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
+    #analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
