@@ -50,10 +50,14 @@ class Simulation:
     def _ros_cb(self, msg):
         self._end_time = time.time()
         difference = self._end_time - self._start_time
-        if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")) or difference > 1500:
+        if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")):
             self._restart = True
             with open(fpath, "w+") as f:
                 f.write("Index: " + str(self._index) + "\n" + msg.msg + "\n")
+        if difference > 1500:
+            self._restart = True
+            with open(fpath, "w+") as f:
+                f.write("Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1500 secs\n")
 
     def _simulate(self, planner, index, start=None, finish=None):
 	    # start simulation
