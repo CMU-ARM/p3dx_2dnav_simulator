@@ -12,7 +12,7 @@ import signal
 import subprocess
 
 from convert import Convert
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from gazebo_msgs.msg import ModelState
 from gazebo_msgs.srv import SetModelState
 from std_srvs.srv import Empty as EmptySrv
@@ -20,10 +20,21 @@ from rosgraph_msgs.msg import Log
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, PoseArray
 from podi_move_base_msgs.msg import PodiMoveBaseActionGoal, PodiMoveBaseActionResult
 
+#!/usr/bin/env python
+import rosnode
+import rosgraph
+import sys
+import argparse
+
+try:
+    from xmlrpc.client import ServerProxy
+except ImportError:
+    from xmlrpclib import ServerProxy
+
 rospack = rospkg.RosPack()
 directory = rospack.get_path("p3dx_2dnav")
-fpath = directory + '/failures/' + "failures.txt"
-
+format_time = time.strftime("%Y%m%d-%H%M%S")
+fpath = directory + '/failures/' + format_time + "failures.txt"
 
 class Simulation:
 
@@ -36,32 +47,47 @@ class Simulation:
         self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
         self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
         self._rosout_sub = rospy.Subscriber('/rosout', Log, self._ros_cb, queue_size=200)
+        self._gazebo_sub = rospy.Subscriber('/gazebo_running', Bool, self._gazebo_cb, queue_size=10)
         self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
         self._description_pub = rospy.Publisher("/description", String, queue_size=1)
         self._restart = True
         self._index = None
         self._start_time = None
         self._end_time = None
+        self._planner = None
+        self._start = None
+        self._finish = None
 
     def _result_cb(self, msg):
         if msg.status.text == "Goal reached.":
             self._restart = True
+
+    def _gazebo_cb(self, msg):
+        if not msg.data:
+            self._restart = True
+            self._kill()
+            self._simulate(self._planner, self._index, self._start, self._finish)
 
     def _ros_cb(self, msg):
         self._end_time = time.time()
         difference = self._end_time - self._start_time
         if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")):
             self._restart = True
-            with open(fpath, "w+") as f:
+            with open(fpath, "a+") as f:
                 f.write("Index: " + str(self._index) + "\n" + msg.msg + "\n")
         if difference > 1500:
             self._restart = True
-            with open(fpath, "w+") as f:
+            with open(fpath, "a+") as f:
                 f.write("Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1500 secs\n")
+
 
     def _simulate(self, planner, index, start=None, finish=None):
 	    # start simulation
         self._index = index
+        self._planner = planner
+        self._start = start
+        self._finish = finish
+
         if self._restart:
             self._start_time = time.time()
             self._restart = False
@@ -69,6 +95,8 @@ class Simulation:
                 self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","robot.launch"])
             elif planner == "coupled":
                 self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","coupled.launch"])
+
+            time.sleep(5)
 
             rospy.wait_for_service("/gazebo/pause_physics")
             try:
@@ -135,7 +163,7 @@ class Simulation:
                     rospy.loginfo(ret.status_message)
                     self._restart = True
                     self._kill()
-                    self._simulate(planner, start, finish)
+                    self._simulate(planner, index, start, finish)
             except Exception, e:
                 rospy.logerr("Error on calling service: %s", str(e))
                 self._restart = True

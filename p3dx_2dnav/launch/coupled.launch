@@ -134,4 +134,5 @@
   <node name="convert_poses" pkg="p3dx_2dnav" type="convertPoses"/>
   <node name="obstacle" pkg="p3dx_2dnav" type="obstacle"/>
   <node name="data" pkg="p3dx_2dnav" type="data.py"/>
+  <node name="alive" pkg="p3dx_2dnav" type="alive.py"/>
 </launch>
