@@ -314,5 +314,5 @@ if __name__ == '__main__':
         time.sleep(3)
 
     # analyze data
-    #analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
-    #analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
+    analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
+    analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])
