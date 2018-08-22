@@ -23,7 +23,6 @@ from podi_move_base_msgs.msg import PodiMoveBaseActionGoal, PodiMoveBaseActionRe
 class Simulation:
 
     def __init__(self):
-        self._child = subprocess.Popen(["roslaunch","p3dx_2dnav","robot.launch"])
         self._set_state = rospy.ServiceProxy("/gazebo/set_model_state", SetModelState)
         self._pause = rospy.ServiceProxy("/gazebo/pause_physics", EmptySrv)
         self._unpause = rospy.ServiceProxy("/gazebo/unpause_physics", EmptySrv)
@@ -33,7 +32,7 @@ class Simulation:
         self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
         self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
         self._description_pub = rospy.Publisher("/description", String, queue_size=1)
-        self._restart = False
+        self._restart = True
 
     def _result_cb(self, msg):
         if msg.status.text == "Goal reached.":
@@ -73,13 +72,13 @@ class Simulation:
         rviz_pose = Pose()
         initial = PoseWithCovarianceStamped()
         c = Convert()
-        
+
         gazebo_start = start["ground_truth"][0]["pose"]["pose"]
         rviz_start = start["robot"][0]["pose"]
-        
+
         gazebo_pose.position.x = gazebo_start["position"]["x"]
         gazebo_pose.position.y = gazebo_start["position"]["y"]
-        gazebo_pose.position.z = 0 
+        gazebo_pose.position.z = 0
 
         gazebo_pose.orientation.x = gazebo_start["orientation"]["x"]
         gazebo_pose.orientation.y = gazebo_start["orientation"]["y"]
@@ -88,13 +87,13 @@ class Simulation:
 
         rviz_pose.position.x = rviz_start["position"]["x"]
         rviz_pose.position.y = rviz_start["position"]["y"]
-        rviz_pose.position.z = 0 
+        rviz_pose.position.z = 0
 
         rviz_pose.orientation.x = rviz_start["orientation"]["x"]
         rviz_pose.orientation.y = rviz_start["orientation"]["y"]
         rviz_pose.orientation.z = rviz_start["orientation"]["z"]
         rviz_pose.orientation.w = rviz_start["orientation"]["w"]
-        
+
         initial.pose.pose = rviz_pose
         initial.header.frame_id = "map"
         initial.pose.covariance = [0.01, -0.00012, 0.0, 0.0, 0.0, 0.0, -0.00012, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -103,7 +102,7 @@ class Simulation:
         state = ModelState()
         state.model_name = "p3dx"
         state.pose = gazebo_pose
-        
+
         # set initial parameters and unpause
         for i in range(0, 2):
             rospy.wait_for_service("/gazebo/set_model_state")
@@ -118,7 +117,7 @@ class Simulation:
                 rospy.logerr("Error on calling service: %s", str(e))
                 self._restart = True
                 self._kill()
-        
+
         rospy.wait_for_service("/gazebo/unpause_physics")
         try:
             self._unpause()
@@ -182,8 +181,8 @@ class Simulation:
 _nsre = re.compile('([0-9]+)')
 def natural_sort_key(s):
     return [int(text) if text.isdigit() else text.lower()
-            for text in re.split(_nsre, s)] 
-            
+            for text in re.split(_nsre, s)]
+
 if __name__ == '__main__':
     rospy.init_node("simulate")
 
@@ -196,37 +195,37 @@ if __name__ == '__main__':
         data = json.load(f)
 
     s = Simulation()
-    
+
     path = directory + "/json"
     files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
     print files
 
     files.sort(key=natural_sort_key)
     files.remove("goals.json")
-    
+
     for startfile in files:
-        
+
         index = files.index(startfile)
         with open(directory + '/json/' + startfile) as f:
             start_data = json.load(f)
-            
-        if index == 20:
-            s._simulate("robot_only", start_data, data["trajectory"]["6"])
+
+        if index == 11:
+            s._simulate("robot_only", start_data, data["trajectory"]["3"])
             s._wait()
             s._kill()
         rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index + 1, 57 - index))
-        
+
     for startfile in files:
-        
+
         index = files.index(startfile)
         with open(directory + '/json/' + startfile) as f:
             start_data = json.load(f)
-            
+
         #if index == 5:
-        #    s._simulate("coupled", start_data, data["trajectory"]["1"]) 
+        #    s._simulate("coupled", start_data, data["trajectory"]["1"])
         #    s._wait()
         #    s._kill()
         #rospy.loginfo("Done with Coupled Simulation {}, Simulations to go: {}".format(index + 1, 28 - index))
-        
+
     #analyze1 = subprocess.Popen(["rosrun","p3dx_2dnav","analyze_data.py"])
     #analyze2 = subprocess.Popen(["rosrun","p3dx_2dnav","cycles.py"])

@@ -2,6 +2,7 @@
 #include <std_msgs/Float64.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
 #include <iterator>
@@ -60,7 +61,7 @@ std::pair<double, double> poseToMap(geometry_msgs::PoseStamped & pt,
     double pt_x = new_pt.pose.position.x;
     double pt_y = new_pt.pose.position.y;
     double pt_th = tf::getYaw(new_pt.pose.orientation);
-    
+
     // variables to keep the distance
     double dist_sq, min_dist = 100000;
 
@@ -89,7 +90,7 @@ std::pair<double, double> poseToMap(geometry_msgs::PoseStamped & pt,
     // given the position of the obstacle, get the angle in the robot reference
     double angle;
     angle = std::atan2(d_y-pt_y, d_x-pt_x)-pt_th;
-    
+
     // debug information
     //ROS_INFO_STREAM("Finding in "<< ros::Time::now()-start<<"s");
     //ROS_INFO_STREAM("Min. Distance and angle: "<< min_dist << "," <<angle*180/M_PI);
@@ -104,14 +105,27 @@ class consolidate{
 	public:
 		nav_msgs::OccupancyGrid last_map;
 		geometry_msgs::PoseStamped last_pose;
+    bool receivedFirstCmdVel;
 
+    consolidate();
 		void costmap_cb(const nav_msgs::OccupancyGrid & msg);
+    void cmd_vel_cb(const geometry_msgs::Twist & msg);
 		void pose_cb(const geometry_msgs::PoseStamped & msg);
 };
+
+consolidate::consolidate() {
+  receivedFirstCmdVel = false;
+}
 
 void consolidate::costmap_cb(const nav_msgs::OccupancyGrid & msg)
 {
 	consolidate::last_map = msg;
+}
+
+void consolidate::cmd_vel_cb(const geometry_msgs::Twist & msg) {
+  if (msg.linear.x != 0.0 || msg.angular.z != 0.0) {
+    receivedFirstCmdVel = true;
+  }
 }
 
 void consolidate::pose_cb(const geometry_msgs::PoseStamped & msg)
@@ -126,15 +140,21 @@ int main(int argc, char **argv){
 
   ros::Subscriber csub = n.subscribe("/podi_move_base/global_costmap/costmap", 1000, &consolidate::costmap_cb, &c);
   ros::Subscriber psub = n.subscribe("/coupling_model_node/human_position", 1000, &consolidate::pose_cb, &c);
+  ros::Subscriber cmd_vel_sub = n.subscribe("/p3dx/cmd_vel", 1000, &consolidate::cmd_vel_cb, &c);
   ros::Publisher dpub = n.advertise<std_msgs::Float64>("obstacle_dist", 1000);
 
   ros::Duration(7).sleep();
-  while(ros::ok()){
-	std::pair <double, double> x = poseToMap(c.last_pose, c.last_map);
-	std_msgs::Float64 msg;
-	msg.data = x.first;
-	dpub.publish(msg);
-	ros::spinOnce();
+  ros::Rate r(5); // the frequency, in Hertz, at which to sample obstacle cost
+  while(ros::ok()) {
+    if (c.receivedFirstCmdVel) {
+      std::pair <double, double> x = poseToMap(c.last_pose, c.last_map);
+    	std_msgs::Float64 msg;
+    	msg.data = x.first;
+    	dpub.publish(msg);
+
+      r.sleep(); // sleep until the appropriate number of seconds (based on the frequency) have elapsed since the last sleep
+    }
+  	ros::spinOnce();
   }
   return 0;
 }
