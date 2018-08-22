@@ -45,7 +45,7 @@ if __name__ == '__main__':
     for i in range (0, divisions):
         rosout.append(files[i*divisor : (i+1)*divisor])
 
-    csv_data = ["Run Number", "Max Common Range", "Robot-Only Cycles", "Coupled Cycles"]
+    csv_data = [["Run Number", "Max Common Range", "Robot-Only Cycles", "Coupled Cycles"]]
 
     # extract and analyze data
     for simulation in rosout[0:runs_per_planner]:
@@ -82,6 +82,6 @@ if __name__ == '__main__':
 
     formatted_time = time.strftime("%Y%m%d-%H%M%S")
     csv_name = formatted_time + "cycles.csv"
-    with open(directory + '/results/' + csv_name) as f:
+    with open(directory + '/results/' + csv_name, "w+") as f:
         csvWriter = csv.writer(f, delimiter=',')
         csvWriter.writerows(csv_data)

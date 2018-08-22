@@ -51,9 +51,8 @@ if __name__ == '__main__':
 
     data = [["Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min",
             "Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min"]]
-    run = raw_input("What timestamp would you like to see? ")
+    #run = raw_input("What timestamp would you like to see? ")
     c = Convert()
-
     # extract and analyze data
     for simulation in simulations:
         rospy.loginfo("Analyzing simulation {}...".format(simulations.index(simulation)))
@@ -87,7 +86,6 @@ if __name__ == '__main__':
             d = json.load(f6)
 
         # display based on user input
-        if run == simulation[0][0:15] or run == "all" or run == "All":
 
             # path = Path()
             # marker_array = MarkerArray()
@@ -163,12 +161,12 @@ if __name__ == '__main__':
 
             #quaternion = (g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"],
             #              g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
-            quaternion = (g["goal"][-1]["poses"][0]["orientation"]["x"], g["goal"][-1]["poses"][0]["orientation"]["y"],
-                          g["goal"][-1]["poses"][0]["orientation"]["z"], g["goal"][-1]["poses"][0]["orientation"]["w"])
+        quaternion = (g["goal"][-1]["poses"][0]["orientation"]["x"], g["goal"][-1]["poses"][0]["orientation"]["y"],
+                      g["goal"][-1]["poses"][0]["orientation"]["z"], g["goal"][-1]["poses"][0]["orientation"]["w"])
 
-            euler = tf.transformations.euler_from_quaternion(quaternion)
-            yaw = euler[2]
-            theta = yaw * 180 / math.pi
+        euler = tf.transformations.euler_from_quaternion(quaternion)
+        yaw = euler[2]
+        theta = yaw * 180 / math.pi
 
             # if g["planner"] == "robot_only":
             #     #new_xy = c.robot_to_human(g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"], theta)
@@ -220,46 +218,49 @@ if __name__ == '__main__':
             #         marker_pub.publish(marker_array)
             #         rospy.sleep(0.1)
 
-            if g["planner"] == "robot_only":
-                #xy = c.robot_to_human(g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"], theta)
-                xy = c.robot_to_human(g["goal"][-1]["poses"][0]["position"]["x"], g["goal"][-1]["poses"][0]["position"]["y"], theta)
-                dpx = abs(p["person"][-1]["pose"]["position"]["x"] - xy[0])
-                dpy = abs(p["person"][-1]["pose"]["position"]["y"] - xy[1])
-            else:
-                dpx = abs(p["person"][-1]["pose"]["position"]["x"] - g["goal"][-1]["poses"][0]["position"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"])
-                dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
+        if g["planner"] == "robot_only":
+            #xy = c.robot_to_human(g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"], g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"], theta)
+            xy = c.robot_to_human(g["goal"][-1]["poses"][0]["position"]["x"], g["goal"][-1]["poses"][0]["position"]["y"], theta)
+            dpx = abs(p["person"][-1]["pose"]["position"]["x"] - xy[0])
+            dpy = abs(p["person"][-1]["pose"]["position"]["y"] - xy[1])
+        else:
+            dpx = abs(p["person"][-1]["pose"]["position"]["x"] - g["goal"][-1]["poses"][0]["position"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["x"])
+            dpy = abs(p["person"][-1]["pose"]["position"]["y"] - g["goal"][-1]["poses"][0]["position"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["y"])
 
-            #dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
+        #dpz = abs(p["person"][-1]["pose"]["position"]["z"] - g["goal"][-1]["poses"][0]["position"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["position"]["z"])
 
-            p_euler = tf.transformations.euler_from_quaternion((p["person"][-1]["pose"]["orientation"]["x"], p["person"][-1]["pose"]["orientation"]["y"], p["person"][-1]["pose"]["orientation"]["z"],
-            p["person"][-1]["pose"]["orientation"]["w"]))
+        p_euler = tf.transformations.euler_from_quaternion((p["person"][-1]["pose"]["orientation"]["x"], p["person"][-1]["pose"]["orientation"]["y"], p["person"][-1]["pose"]["orientation"]["z"],
+        p["person"][-1]["pose"]["orientation"]["w"]))
 
-            g_euler = tf.transformations.euler_from_quaternion((g["goal"][-1]["poses"][0]["orientation"]["x"], g["goal"][-1]["poses"][0]["orientation"]["y"], g["goal"][-1]["poses"][0]["orientation"]["z"],
-            g["goal"][-1]["poses"][0]["orientation"]["w"]))
+        g_euler = tf.transformations.euler_from_quaternion((g["goal"][-1]["poses"][0]["orientation"]["x"], g["goal"][-1]["poses"][0]["orientation"]["y"], g["goal"][-1]["poses"][0]["orientation"]["z"],
+        g["goal"][-1]["poses"][0]["orientation"]["w"]))
 
-            yaw_diff = abs(p_euler[2] - g_euler[2])
+        yaw_diff = abs(p_euler[2] - g_euler[2])
 
-            #dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
-            #doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
-            #doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
-            #dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
+        #dox = abs(p["person"][-1]["pose"]["orientation"]["x"] - g["goal"][-1]["poses"][0]["orientation"]["x"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["x"])
+        #doy = abs(p["person"][-1]["pose"]["orientation"]["y"] - g["goal"][-1]["poses"][0]["orientation"]["y"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["y"])
+        #doz = abs(p["person"][-1]["pose"]["orientation"]["z"] - g["goal"][-1]["poses"][0]["orientation"]["z"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["z"])
+        #dow = abs(p["person"][-1]["pose"]["orientation"]["w"] - g["goal"][-1]["poses"][0]["orientation"]["w"])#g["goal"][0]["goal"]["target_poses"]["poses"][0]["orientation"]["w"])
 
-            obstacles = o["obstacle"]
-            total = 0
-            newArray = []
-            for obstacle in obstacles:
-                total += obstacle["data"]
-                newArray.append(obstacle["data"])
+        obstacles = o["obstacle"]
+        total = 0
+        newArray = []
+        for obstacle in obstacles:
+            total += obstacle["data"]
+            newArray.append(obstacle["data"])
 
+        if len(newArray) > 0:
             maximum = max(newArray)
             minimum = min(newArray)
             avg = total / len(obstacles)
+        else:
+            maximum = minimum = avg = "N/A"
 
-            array = [(simulations.index(simulation) % 29) + 1, simulation[0][0:15], d["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
-            if simulations.index(simulation) < 29:
-                data.append(array)
-            else:
-                data[(simulations.index(simulation) % 29) + 1] += array
+        array = [(simulations.index(simulation) % 29) + 1, simulation[0][0:15], d["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
+        if simulations.index(simulation) < 29:
+            data.append(array)
+        else:
+            data[(simulations.index(simulation) % 29) + 1] += array
 
     time_string = time.strftime("%Y%m%d-%H%M%S")
     csv_name = time_string + "data.csv"

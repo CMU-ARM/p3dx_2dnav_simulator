@@ -47,7 +47,7 @@ class Simulation:
         self._goal_pub = rospy.Publisher("/podi_move_base/goal", PodiMoveBaseActionGoal, queue_size=2)
         self._result_sub = rospy.Subscriber("/podi_move_base/result", PodiMoveBaseActionResult, self._result_cb, queue_size=1)
         self._rosout_sub = rospy.Subscriber('/rosout', Log, self._ros_cb, queue_size=200)
-        self._gazebo_sub = rospy.Subscriber('/gazebo_running', Bool, self._gazebo_cb, queue_size=10)
+        self._gazebo_sub = rospy.Subscriber('/gazebo_running', Bool, self._gazebo_cb, queue_size=1)
         self._endgoal_pub = rospy.Publisher("/endgoals", PoseArray, queue_size=2)
         self._description_pub = rospy.Publisher("/description", String, queue_size=1)
         self._restart = True
