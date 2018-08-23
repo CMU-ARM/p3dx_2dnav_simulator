@@ -82,27 +82,6 @@
           "x": -4.19284582138,
           "y": 20.993894577,
           "angle": -90
-        },
-        {
-          "frame_id": "map",
-          "description": "Top open room, 135",
-          "x": -4.19284582138,
-          "y": 20.993894577,
-          "angle": 135
-        },
-        {
-          "frame_id": "map",
-          "description": "Top open room, -135",
-          "x": -4.19284582138,
-          "y": 20.993894577,
-          "angle": -135
-        },
-        {
-          "frame_id": "map",
-          "description": "Top open room, 180",
-          "x": -4.19284582138,
-          "y": 20.993894577,
-          "angle": 180
         }
     ]
   }
