@@ -8,7 +8,7 @@
 ## Important File Parameters (in yamls folder)
 1) In global_planner_params, ```cycles``` governs how many search cycles the global planner takes before ending planning.
 
-2) In local_planner_params, ```pdist_scale```, ```gdist_scale```, and ```occ_dist_scale``` determine the weights for how closely the robot follows the path and avoids obstacle. These parameters still need some tuning
+2) In local_planner_params, ```pdist_scale```, ```gdist_scale```, and ```occ_dist_scale``` determine the weights for how closely the robot follows the path and avoids obstacles. **These parameters still need some tuning**
 
 3) In costmap_common_params, ```inflation_radius``` determines how far obstacles are inflated in the costmap. Seems reasonable for now but feel free to change, as it changes the global path planned.
 
