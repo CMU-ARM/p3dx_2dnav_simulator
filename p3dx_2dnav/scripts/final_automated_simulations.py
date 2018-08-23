@@ -74,11 +74,11 @@ class Simulation:
         if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")):
             self._restart = True
             with open(fpath, "a+") as f:
-                f.write("Index: " + str(self._index) + "\n" + msg.msg + "\n")
+                f.write("Planner: " + self._planner + "Index: " + str(self._index) + "\n" + msg.msg + "\n")
         if difference > 1500:
             self._restart = True
             with open(fpath, "a+") as f:
-                f.write("Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1500 secs\n")
+                f.write("Planner: " + self._planner + "Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1500 secs\n")
 
 
     def _simulate(self, planner, index, start=None, finish=None):
