@@ -209,8 +209,8 @@ if __name__ == '__main__':
         with open(directory + '/json/' + startfile) as f:
             start_data = json.load(f)
 
-        if index == 11:
-            s._simulate("robot_only", start_data, data["trajectory"]["3"])
+        if index == 23:
+            s._simulate("robot_only", start_data, data["trajectory"]["6"])
             s._wait()
             s._kill()
         rospy.loginfo("Done with Robot-Only Simulation: {}, Simulations to go: {}".format(index + 1, 57 - index))

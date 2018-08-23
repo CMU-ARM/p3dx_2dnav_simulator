@@ -13,9 +13,10 @@ try:
 except ImportError:
     from xmlrpclib import ServerProxy
 
+# checks if gazebo has died prematurely, and if so, messages for kill and restart
 class Pid:
     def __init__(self):
-        self._pid_pub = rospy.Publisher("/gazebo_running", Bool, queue_size=2)
+        self._pid_pub = rospy.Publisher("/gazebo_running", Bool, queue_size=1)
 
     def _pid_running(self, pid):
         try:
@@ -36,17 +37,17 @@ class Pid:
             try:
                 node = ServerProxy(node_api)
                 pid = rosnode._succeed(node.getPid(ID))
-            except TypeError:
-                for i in range (0,10):
+                if not self._pid_running(pid):
                     msg.data = False
                     self._pid_pub.publish(msg)
-
-            if not self._pid_running(pid):
+                else:
+                    msg.data = True
+                    self._pid_pub.publish(msg)
+            except TypeError:
+                os.system("killall gzserver")
                 msg.data = False
                 self._pid_pub.publish(msg)
-            else:
-                msg.data = True
-                self._pid_pub.publish(msg)
+                exit()
 
 if __name__ == "__main__":
     rospy.init_node("alive")
