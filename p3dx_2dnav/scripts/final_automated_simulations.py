@@ -57,13 +57,15 @@ class Simulation:
         self._planner = None
         self._start = None
         self._finish = None
+        self._sent = False
 
     def _result_cb(self, msg):
         if msg.status.text == "Goal reached.":
             self._restart = True
 
     def _gazebo_cb(self, msg):
-        if not msg.data:
+        if not msg.data and not self._sent:
+            self._sent = True
             self._restart = True
             self._kill()
             self._simulate(self._planner, self._index, self._start, self._finish)
@@ -74,11 +76,11 @@ class Simulation:
         if (msg.msg and (msg.msg[0:8] == "Aborting" or msg.msg[0:6] == "Failed")):
             self._restart = True
             with open(fpath, "a+") as f:
-                f.write("Planner: " + self._planner + "Index: " + str(self._index) + "\n" + msg.msg + "\n")
-        if difference > 1500:
+                f.write("Planner: " + self._planner + " Index: " + str(self._index) + "\n" + msg.msg + "\n")
+        if difference > 1800:
             self._restart = True
             with open(fpath, "a+") as f:
-                f.write("Planner: " + self._planner + "Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1500 secs\n")
+                f.write("Planner: " + self._planner + " Index: " + str(self._index) + "\n" + "Timeout due to runtime > 1800 secs\n")
 
 
     def _simulate(self, planner, index, start=None, finish=None):

@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     c = Convert()
 
-    # extract and analyze data
+    # display rviz data
     time.sleep(15)
     run = raw_input("What timestamp would you like to see? ")
     for simulation in simulations:

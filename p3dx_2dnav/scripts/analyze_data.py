@@ -52,8 +52,9 @@ if __name__ == '__main__':
 
     data = [["Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min",
             "Run Number", "Timestamp", "Description", "Planner", "dpx", "dpy", "dtheta (radians)", "o-avg", "o-max", "o-min"]]
-    #run = raw_input("What timestamp would you like to see? ")
+
     c = Convert()
+
     # extract and analyze data
     for simulation in simulations:
         rospy.loginfo("Analyzing simulation {}...".format(simulations.index(simulation)))
