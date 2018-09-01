@@ -124,7 +124,7 @@ if __name__ == '__main__':
         else:
             maximum = minimum = avg = "N/A"
 
-        array = [(simulations.index(simulation) % runs_per_planner) + 1, simulation[0][0:15], d["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
+        array = [(simulations.index(simulation) % runs_per_planner), simulation[0][0:15], d["description"][0]["data"], g["planner"], dpx, dpy, yaw_diff, avg, maximum, minimum]
         if simulations.index(simulation) < runs_per_planner:
             data.append(array)
         else:
