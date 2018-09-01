@@ -78,7 +78,7 @@ if __name__ == '__main__':
         max_common_range = max(list(set(rrange).intersection(crange)))
         min_rcycle = next(x for x in rcycle if rrange[rcycle.index(x)] == max_common_range)
         min_ccycle = next(x for x in ccycle if crange[ccycle.index(x)] == max_common_range)
-        csv_data.append([index + 1, max_common_range, min_rcycle, min_ccycle])
+        csv_data.append([index, max_common_range, min_rcycle, min_ccycle])
 
     formatted_time = time.strftime("%Y%m%d-%H%M%S")
     csv_name = formatted_time + "cycles.csv"
