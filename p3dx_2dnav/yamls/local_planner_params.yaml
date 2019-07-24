@@ -1,0 +1,109 @@
+#For full documentation of the parameters in this file, and a list of all the
+#parameters available for DWAPlannerROS, please see
+#http://www.ros.org/wiki/dwa_local_planner
+# DWAPlannerROS:
+#   acc_lim_th: 3.2
+#   acc_lim_x: 1.5
+#   acc_lim_y: 1.5
+#   max_vel_x: 0.35
+#   min_vel_x: 0.0
+#   max_vel_y: 0.1
+#   min_vel_y: -0.1
+#   max_trans_vel: 0.65
+#   min_trans_vel: 0.1
+#   max_rot_vel: 1.0
+#   min_rot_vel: 0.4
+#   sim_time: 1.7
+#   sim_granularity: 0.025
+#   goal_distance_bias: 32.0
+#   path_distance_bias: 24.0
+#   occdist_scale: 0.1
+#   stop_time_buffer: 0.2
+#   oscillation_reset_dist: 0.05
+#   forward_point_distance: 0.325
+#   scaling_speed: 0.25
+#   max_scaling_factor: 0.2
+#   vx_samples: 3
+#   vy_samples: 10
+#   vtheta_samples: 20
+#   sim_period: 0.1
+#   xy_goal_tolerance: 0.2
+#   yaw_goal_tolerance: 0.17
+#   rot_stopped_vel: 0.01
+#   trans_stopped_vel: 0.01
+#   controller_frequency: 6
+
+PodiTrajectoryPlannerROS:
+  # pdist_scale: 0.9 #The weighting for how much the controller should stay close to the path it was given
+
+  max_vel_x: 0.8 # The maximum forward velocity allowed for the base in meters/sec
+  min_vel_x: 0.03 # The minimum forward velocity allowed for the base in meters/sec.
+  max_vel_theta: 0.8 #The maximum rotational velocity allowed for the base in radians/sec
+  min_vel_theta: -0.8 #The minimum rotational velocity allowed for the base in radians/sec
+  min_in_place_vel_theta: 0.01 # The minimum rotational velocity allowed for the base while performing in-place rotations in radians/sec
+  escape_vel: 0.0 # -0.1 # m/s, the speed used for reversing when unstucking itself
+
+  acc_lim_theta: 2.0 #The rotational acceleration limit of the robot in radians/sec^2
+  acc_lim_x: 0.7 #The x acceleration limit of the robot in meters/sec^2
+
+  yaw_goal_tolerance: 0.25 # 0.25 # rotational tolerance of the controller in radians when achieving its goal
+  xy_goal_tolerance: 0.05 # the translational tolerance of the controller in meters when achieving its goal
+
+  latch_xy_goal_tolerance: true
+
+  meter_scoring: true #Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells.
+  pdist_scale: 5.0 # 0.6 # The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0
+  gdist_scale: 5.0 # 0.8 # The weighting for how much the controller should attempt to reach its local goal, also controls speed, maximal possible value is 5.0
+  occdist_scale: 5.0 # 0.01
+
+  dwa: false
+  use_dwa: false
+  holonomic_robot: false #Determines whether velocity commands are generated for a holonomic or non-holonomic robot.
+
+# PodiTrajectoryPlannerROS:
+#   # Robot Configuration Parameters (y is not used since non-holonomic robot)
+#   acc_lim_x: 0.5 #The x acceleration limit of the robot in meters/sec^2
+#   acc_lim_theta: 2.0 #The rotational acceleration limit of the robot in radians/sec^2
+#   max_vel_x: 0.6 # The maximum forward velocity allowed for the base in meters/sec.  According to the docs, the actual max is 1.2 m/s
+#   min_vel_x: 0.1 # The minimum forward velocity allowed for the base in meters/sec.
+#   max_vel_theta: 0.6 #The maximum rotational velocity allowed for the base in radians/sec.  According to docs, max rotational vel is 300 degrees/sec
+#   min_vel_theta: -0.6 #The minimum rotational velocity allowed for the base in radians/sec.  According to docs, max rotational vel is 300 degrees/sec
+#   min_in_place_vel_theta: 0.1 # The minimum rotational velocity allowed for the base while performing in-place rotations in radians/sec
+#   escape_vel: -0.1 # m/s, the speed used for reversing when unstucking itself
+#   holonomic_robot: false #Determines whether velocity commands are generated for a holonomic or non-holonomic robot.
+#
+#   # Goal Tolerance parameters
+#   yaw_goal_tolerance: 0.05 # 0.25 # rotational tolerance of the controller in radians when achieving its goal
+#   xy_goal_tolerance: 0.10 # the translational tolerance of the controller in meters when achieving its goal
+#
+#   # # Goal Close Enough Tolerance parameters
+#   # yaw_goal_close_enough_threshold: 1.0 # 0.25 # rotational tolerance of the controller in radians when achieving its goal
+#   # xy_goal_close_enough_threshold: 1.0 # the translational tolerance of the controller in meters when achieving its goal
+#   #
+#   # # Goal Start Tolerance parameters
+#   # yaw_start_threshold: 0.75 # 0.25 # rotational tolerance of the controller in radians when achieving its goal
+#   # xy_start_threshold: 1.5 # the translational tolerance of the controller in meters when achieving its goal
+#
+#   # Forward Simulation Parameters
+#   sim_time: 2.0 # the amount of time to forward-simulate trajectories in sec
+#   # sim_time_close_to_goal: 0.8 # the amount of time to forward-simulate trajectories in sec
+#   controller_frequency: 6
+#
+#   # sim_period: 2.0
+#   sim_granularity: 0.025 # the step size, in meters, to take between points on a given trajectory
+#   angular_sim_granularity: 0.025 # the step size, in radians, to take between points on a given trajectory
+#   vx_samples: 15 # 20 # the number of samples to take when exploring the x velocity space
+#   vtheta_samples: 15 # 20 # the number of samples to take when exploring the theta velocity space
+#
+#   # Trajectory Scoring Parameters
+#   meter_scoring: true #Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells.
+#   pdist_scale: 2.0 # 3.5 # The weighting for how much the controller should stay close to the path it was given, maximal possible value is 5.0
+#   gdist_scale: 0.8 # 0.8 # The weighting for how much the controller should attempt to reach its local goal, also controls speed, maximal possible value is 5.0
+#   occdist_scale: 0.4 # The weighting for how much the controller should attempt to avoid obstacles
+#   orientationdist_scale: 1.0 # The weighting for how aligned the robot and human is with its local goal's orientation, max is 5.0
+#   robotHumanWeighting: 0.5 # the weight for how much to weight the robot following its path versus the human following its path, in [0, 1], 1 means the human fully follows its path and the robot not at all
+#   heading_lookahead: 0 # How far to look ahead in meters when scoring different in-place-rotation trajectories
+#   heading_scoring: false # true # NOTE (amal): setting this false because when you are looking at where the human is, it doesnt make sense to look at heading difference, it makes more sense to look at distance difference # Whether to score based on the robot's heading to the path or its distance from the path
+#   heading_scoring_timestep: 1.5 # How far to look ahead in time in seconds along the simulated trajectory when using heading scoring
+#   dwa: false # Whether to use Dynamic Window Approach or Trajectory Rollout
+#   use_dwa: false

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE"
+     value="$(find p3dx_2dnav)/config/custom_rosconsole.conf"/>
+  
+  <!--MAP SERVER-->
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage-refined.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_yaml)" />
+  
+  <node respawn="true" pkg="joy" type="joy_node" name="test_joy" output="screen">
+    <param name="dev" type="string" value="/dev/input/js0" />
+  </node>
+
+  <node pkg="podi" type="test_control" name="test_control" output="screen" args="record">
+    <!-- <param name="recordOnlyVelocity" type="bool" value="true" /> -->
+    <remap from="RosAria/cmd_vel" to="p3dx/cmd_vel"/>
+  </node>
+
+  <!--AMCL and GAZEBO-->
+  <arg name="start_descriptor" default="test start 1" />
+  <arg name="init_x" default="8.8" />
+  <arg name="init_y" default="8.4" />
+  <arg name="init_a" default="0" />
+
+  <!--AMCL-->
+  <arg name="scan_topic" default="/p3dx/laser/scan"/>
+
+  <!--P3DX in GAZEBO-->
+  <include file="$(find p3dx_gazebo)/launch/gazebo.launch">
+    <arg name="gui" value="true"/>
+    <arg name="init_x" value="$(arg init_x )"/>
+    <arg name="init_y" value="$(arg init_y )"/>
+    <arg name="init_a" value="$(arg init_a )"/>
+    <arg name="contact" value="0" />
+  </include>
+</launch>

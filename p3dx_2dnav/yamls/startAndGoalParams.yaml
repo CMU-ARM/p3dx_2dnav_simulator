@@ -1,0 +1,6 @@
+# pathsToShow: ["/home/amal/baxter_ws/src/Podi-2DNavigation/podi_interaction_aware_planner/data/start_0_client_0_2018-05-24-15-19-32.json", "/home/amal/baxter_ws/src/Podi-2DNavigation/podi_interaction_aware_planner/data/start_1_client_0_2018-05-24-15-19-44.json"]
+databasePath: "/home/amal/baxter_ws/src/p3dx_2dnav_simulator/p3dx_2dnav/json/startAndGoalLocations.json"
+plannersToRun: ["robot_only_planner", "coupled_planner"]
+goalLocation: "NSHA407"
+storeJSONBasePath: "/home/amal/baxter_ws/src/p3dx_2dnav_simulator/p3dx_2dnav/simulations/"
+# startIndex: 13

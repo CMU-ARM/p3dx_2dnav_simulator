@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+
+<launch>
+  <env name="ROSCONSOLE_CONFIG_FILE"
+     value="$(find p3dx_2dnav)/config/custom_rosconsole.conf"/>
+
+  <!--MAP SERVER-->
+  <arg name="map_yaml" default="$(find p3dx_2dnav)/maps/willowgarage/willowgarage-refined.yaml" />
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_yaml)" />
+
+  <!--AMCL and GAZEBO-->
+  <arg name="start_descriptor" default="test start 1" />
+  <arg name="init_x" default="-11" />
+  <arg name="init_y" default="8.4" />
+  <arg name="init_a" default="0" />
+
+  <!--AMCL-->
+  <arg name="scan_topic" default="/p3dx/laser/scan"/>
+  <node name="amcl" pkg="amcl" type="amcl" args="">
+    <remap from="scan" to="$(arg scan_topic)" />
+    <param name="initial_pose_x" type="double" value="$(arg init_x )" />
+    <param name="initial_pose_y" type="double" value="$(arg init_y )" />
+    <param name="initial_pose_a" type="double" value="$(arg init_a )" />
+    <!-- <param name="initial_cov_xx" type="double" value="0.01" />
+    <param name="initial_cov_yy" type="double" value="0.01" />
+    <param name="initial_cov_aa" type="double" value="0.01" /> -->
+
+    <!--Minimum allowed number of particles. -->
+    <param name="min_particles" value="100"/>
+    <!--Maximum allowed number of particles. -->
+    <param name="max_particles" value="5000"/>
+
+    <!--Translational movement required before performing a filter update.-->
+    <!-- <param name="update_min_d" value="0.1"/> -->
+    <!--Rotational movement required before performing a filter update. -->
+    <!-- <param name="update_min_a" value="0.15"/> -->
+    <!--Number of filter updates required before resampling. -->
+    <!-- <param name="resample_interval" value="2"/> -->
+    <!--Number of filter updates required before resampling. -->
+    <!-- <param name="transform_tolerance" value="0.1" /> -->
+
+    <!--Initial pose covariance (x*x), used to initialize filter with Gaussian distribution. -->
+    <param name="initial_cov_xx" value="0.0000000"/>
+    <!--Initial pose covariance (y*y), used to initialize filter with Gaussian distribution. -->
+    <param name="initial_cov_yy" value="0.0000000"/>
+    <!--Initial pose covariance (yaw*yaw), used to initialize filter with Gaussian distribution. -->
+    <param name="initial_cov_aa" value="0.0000000"/>
+    <!--When set to true, AMCL will subscribe to the map topic rather than making a service call to receive its map. New in navigation XXXX-->
+    <param name="use_map_topic" value="true"/>
+
+
+    <!--Laser model parameters-->
+    <!-- <param name="laser_model_type" value="likelihood_field"/> -->
+    <!--How many evenly-spaced beams in each scan to be used when updating the filter. -->
+    <!-- <param name="laser_max_beams" value="30"/> -->
+    <!--Mixture weight for the z_hit part of the model. -->
+    <!-- <param name="laser_z_hit" value="0.95"/> -->
+    <!--Mixture weight for the z_rand part of the model. -->
+    <!-- <param name="laser_z_rand" value="0.05"/> -->
+    <!--Standard deviation for Gaussian model used in z_hit part of the model. -->
+    <!-- <param name="laser_sigma_hit" value="0.2"/> -->
+    <!-- Maximum distance to do obstacle inflation on map, for use in likelihood_field model. -->
+    <!-- <param name="laser_likelihood_max_dist" value="2.0"/> -->
+
+
+    <!-- Odometery model parameters -->
+    <!--Which model to use, either "diff" or "omni". -->
+    <param name="odom_model_type" value="diff"/>
+    <!-- Noise in odometry is rotation estimate from the rotational component of the robot is motion-->
+    <param name="odom_alpha1" value="0.2"/>
+    <!-- Noise in odometry is rotation estimate from translational component of the robotis  motion-->
+    <param name="odom_alpha2" value="0.2"/>
+    <!-- Noise in odometry is translation estimate from the translational component of the robot is motion-->
+    <param name="odom_alpha3" value="0.2"/>
+    <!-- Noise in odometry is translation estimate from the rotational component of the robot is motion-->
+    <param name="odom_alpha4" value="0.2"/>
+    <param name="odom_alpha5" value="0.2"/>
+  </node>
+
+  <!--P3DX in GAZEBO-->
+  <include file="$(find p3dx_gazebo)/launch/gazebo.launch">
+    <arg name="gui" value="true"/>
+    <arg name="init_x" value="$(arg init_x )"/>
+    <arg name="init_y" value="$(arg init_y )"/>
+    <arg name="init_a" value="$(arg init_a )"/>
+    <arg name="contact" value="0" />
+  </include>
+
+  <arg name="cmd_vel" default="p3dx/cmd_vel"/>
+
+  <!--MOVE BASE for COSTMAP-->
+  <node name="podi_move_base" pkg="podi_move_base" type="podi_move_base" respawn="false" output="screen" args="cmd_vel:=$(arg cmd_vel)">
+    <rosparam file="$(find p3dx_2dnav)/yamls/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/local_planner_params.yaml" command="load" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/coupled_move_base_params.yaml" command="load" />
+    <rosparam file="$(find p3dx_2dnav)/yamls/global_planner_params.yaml" command="load"/>
+    <remap from="odom" to="p3dx/odom"/>
+  </node>
+
+  <!-- <arg name="cmd_ns" default="p3dx" />
+  <include file="$(find p3dx_2dnav)/launch/move_base.launch">
+    <arg name="cmd_vel" value="/$(arg cmd_ns)/cmd_vel"/>
+  </include> -->
+
+  <include file="$(find p3dx_description)/launch/rviz.launch">
+    <arg name="rviz_node_args" value="-d $(find p3dx_2dnav)/config/p3dx_2dnav.rviz"/>
+  </include>
+
+  <node respawn="true" pkg="joy" type="joy_node" name="test_joy" output="screen">
+    <param name="dev" type="string" value="/dev/input/js0" />
+  </node>
+
+  <node pkg="podi" type="test_control" name="test_control" output="screen" args="record"> -->
+    <remap from="RosAria/cmd_vel" to="p3dx/cmd_vel"/>
+  </node>
+
+  <node pkg="podi_robot_human_coupled_planner" type="planner" respawn="false" name="coupled_planner" output="screen">
+    <rosparam file="$(find podi_run_global_planners)/cfg/costmap_params.yaml" command="load" ns="costmap" />
+    <rosparam file="$(find podi_run_global_planners)/cfg/global_planner_params.yaml" command="load"/>
+  </node>
+
+  <!--<node pkg="podi_robot_only_planner" type="planner" respawn="false" name="robot_only_planner" output="screen">
+    <rosparam file="$(find podi_run_global_planners)/cfg/costmap_params.yaml" command="load" ns="costmap" />
+    <rosparam file="$(find podi_run_global_planners)/cfg/global_planner_params.yaml" command="load"/>
+  </node>-->
+
+  <node name="coupling_model_node" pkg="podi_navigation_helpers" type="coupling_model_node" output="screen">
+    <rosparam file="$(find p3dx_2dnav)/yamls/coupling_model_and_robot_params.yaml" command="load"/>
+  </node>
+
+  <node name="convert_poses" pkg="p3dx_2dnav" type="convertPoses"/>
+  <node name="obstacle" pkg="p3dx_2dnav" type="obstacle"/>
+  <node name="data" pkg="p3dx_2dnav" type="data.py"/>
+  <node name="alive" pkg="p3dx_2dnav" type="alive.py"/>
+</launch>
